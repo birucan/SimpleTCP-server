@@ -1,4 +1,4 @@
-import socket, os
+import socket, os, hashlib, time
 
 
 def createSocket(ip, port):
@@ -10,18 +10,28 @@ def createSocket(ip, port):
         print("Unable to connect")
         raise
 
-    #hola =open("./archivos/hola.txt", "rt")
-    hola= "hola bb como estas el dia de hoy"
+    hola= input('seleccione archivo 1 o 2:')
     hello =hola.encode()
     sock.send(hello)
-    response = "non"
 
-    while response == "non":
-        response=sock.recv(4096)
-        print(response)
+    file= sock.recv(1024)
+    fileLocal= open(hola, "wb")
 
+    ts = time.time()
+    while (file):
+        fileLocal.write(file)
+        file = sock.recv(1024)
+
+    ts= time.time() - ts
+    print("archivo recibido en ", ts, " milisegundos")
     sock.close()
 
-
+#robado de stack overflow
+def generateHash(file):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
 
 createSocket("localhost", 8080)
