@@ -12,7 +12,7 @@ thread_count = 0
 semaforo = threading.Semaphore()
 event = threading.Event()
 fecha = datetime.now().strftime("%d-%m-%Y_%H_%M_%S")
-file_path = './archivos/100MB.txt'
+file_path = './archivos/1.dummy'
 
 print("Archivos:")
 print(" (1) 100MB.txt")
@@ -20,7 +20,7 @@ print(" (2) 250MB.mp4")
 print("----------------")
 archivo = int(input("Archivo a enviar (1 o 2): "))
 if archivo == 2:
-    file_path = './archivos/250MB.mp4'
+    file_path = './archivos/2.dummy'
 num_clientes = int(input("Ingrese numero de clientes: "))
 print("Esperando {} clientes".format(num_clientes))
 
@@ -69,7 +69,7 @@ def threaded(c, thread_count):
             c.sendall(filename.encode()+b'\n')
             c.sendall(filesize.encode() + b'\n')
             c.sendall(hash_file(file_path).encode()+b'\n')
-            
+
             log = "C" + str(thread_count) + " | " + fecha + " | "
             log = log + filename + " | " + str(round((int(filesize)/1024),2)) + "KB"
             inicio = time.time()
